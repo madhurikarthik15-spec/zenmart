@@ -1,6 +1,8 @@
 <?php
-// includes/header.php
-session_start();
+ session_start();
+
+ $username = $_SESSION['username'] ?? "Sign in";
+ $cartCount = $_SESSION['cart_count'] ?? 0;
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,40 +26,96 @@ session_start();
 </head>
 <body>
   <!--main header-->  
-    <header class="main-header">
-        <div class="container-fluid">
-            <div class=" row d-flex flex-wrap align-items-center py-2">
-              <div class="top-navbar col-md-3 col-12 mb-2">  
-                <a href="#" style="text-decoration:none">
-                    <img src="../assets/images/zenmart_logo.png" style="width:75px"/>
-                    <span class="logo-text">ZenMart</span>
-                </a> 
-              </div>   
-               <div class="col-md-3 col-12">
-                <form class="d-flex zenmart-search">
+<header>
+   <nav class="navbar bg-body-tertiary">
+     <div class="container-fluid">
 
-                    <!-- Category Dropdown -->
-                       <select class="form-select category-select">
-                            <option selected>All</option>
-                            <option>Electronics</option>
-                            <option>Fashion</option>
-                            <option>Books</option>
-                            <option>Groceries</option>
-                        </select>
+    <!--<a class="navbar-brand" href="#">Navbar</a>-->
+      <a href="#" style="text-decoration:none">
+                   <img class="logo-image" src="../assets/images/logo.png"style="width:80px">
+                    <span class="logo-text">ZenMart</span>
+      </a>
+
+      <form class="d-flex zenmart-search mx-auto" action="/zenmart/includes/products.php" method="GET">
+                 <!-- Category Dropdown -->
+                    <select class="form-select category-select" name="category">
+                          <option value="all">All</option>
+                          <option value="electronics">Electronics</option>
+                          <option value="fashion">Fashion</option>
+                          <option value="books">Books</option>
+                          <option value="groceries">Groceries</option>
+                      </select>
 
                      <!-- Search Input -->
-                     <input type="text" class="form-control search-input" placeholder="Search Products Here">
-
-                    <!-- Search Button -->
+                     <input type="text" name="search" class="form-control form-control-lg search-input" placeholder="Search Products Here">
+                     <!-- Search Button -->
                      <button class="btn search-btn" type="submit">
-                            <i class="bi bi-search"></i>
+                        <i class="bi bi-search"></i>
                      </button>
+      </form>
 
-                </form>
-             </div>
-           </div>
-        </div>  
-     </header>
+
+    <ul class="navbar-nav flex-row align-items-center gap-3">
+      <!--<li class="nav-item">
+        <a class="nav-link active" href="#">Home</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+      </li>-->
+
+   <li class="nav-item dropdown">
+  <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+    <small class="text-white">
+      Hello,
+      <?= isset($_SESSION['user']) ? $_SESSION['user'] : 'Sign in'; ?>
+    </small><br>
+    <strong class="text-white">Account & Lists</strong>
+  </a>
+
+  <ul class="dropdown-menu">
+    <?php if (!isset($_SESSION['user'])) { ?>
+      <li><a class="dropdown-item" href="login.php">Sign in</a></li>
+      <li>
+        <small class="dropdown-item-text">
+          New customer?
+          <a href="register.php">Start here</a>
+        </small>
+      </li>
+    <?php } else { ?>
+      <li><h6 class="dropdown-header">Your Account</h6></li>
+      <li><a class="dropdown-item" href="orders.php">Your Orders</a></li>
+      <li><a class="dropdown-item" href="profile.php">Profile</a></li>
+      <li><hr class="dropdown-divider"></li>
+      <li><a class="dropdown-item text-danger" href="logout.php">Logout</a></li>
+    <?php } ?>
+  </ul>
+</li>
+
+    <li class="nav-item">
+        <a class="nav-link active text-white text-decoration-none" href="#">Returns & Orders</a>
+      </li>
+    
+    <li class="nav-item">
+        <a href="cart.php" class="cart-link">
+   <i class="bi bi-cart"></i>
+   <span class="cart-count">Cart
+      <?= $_SESSION['cart_count'] ?? 0 ?>
+   </span>
+</a>
+
+      </li>  
+
+    
+    </ul>
+
+    
+
+  </div>
+</nav>
+
+
+</header> 
                     
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
        
